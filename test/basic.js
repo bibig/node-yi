@@ -1,33 +1,31 @@
-// utils.js unit test
-
-var utils = require('../index');
+var yi = require('../index');
 var should = require('should');
 
-describe('utils unit test', function () {
+describe('yi unit test', function () {
 
   describe('trim unit test', function () {
     it('test trim', function () {
-      utils.trim(' a ').should.be.exactly('a');
-      utils.trim(' a b ').should.be.exactly('a b');
+      yi.trim(' a ').should.be.exactly('a');
+      yi.trim(' a b ').should.be.exactly('a b');
     });  
   });
 
   describe('isEmpty unit test', function () {
-    (utils.isEmpty(null)).should.ok;
-    (utils.isEmpty('')).should.ok;
-    (utils.isEmpty(undefined)).should.ok;
+    (yi.isEmpty(null)).should.ok;
+    (yi.isEmpty('')).should.ok;
+    (yi.isEmpty(undefined)).should.ok;
 
-    (utils.isEmpty([])).should.ok;
-    (utils.isEmpty({})).should.ok;
+    (yi.isEmpty([])).should.ok;
+    (yi.isEmpty({})).should.ok;
 
-    (utils.isEmpty('a')).should.not.be.ok;
-    (utils.isEmpty(1)).should.not.be.ok;
-    (utils.isEmpty(0)).should.not.be.ok;
+    (yi.isEmpty('a')).should.not.be.ok;
+    (yi.isEmpty(1)).should.not.be.ok;
+    (yi.isEmpty(0)).should.not.be.ok;
 
-    (utils.isEmpty([null])).should.not.be.ok;
-    (utils.isEmpty([''])).should.not.be.ok;
-    (utils.isEmpty([undefined])).should.not.be.ok;
-    (utils.isEmpty({a: null})).should.not.be.ok;    
+    (yi.isEmpty([null])).should.not.be.ok;
+    (yi.isEmpty([''])).should.not.be.ok;
+    (yi.isEmpty([undefined])).should.not.be.ok;
+    (yi.isEmpty({a: null})).should.not.be.ok;
   });
 
   describe('clone unit test', function () {
@@ -46,8 +44,8 @@ describe('utils unit test', function () {
 
     it('basic hash clone', function () {
       var a = {'k1': 'v1', 'k2': 'v2', 'k3': 'v3'};
-      var b = utils.clone(a, ['k1', 'k2']);
-      var c = utils.clone(a, 'k1, k3');
+      var b = yi.clone(a, ['k1', 'k2']);
+      var c = yi.clone(a, 'k1, k3');
 
       b.should.have.property('k1');
       b.should.have.property('k2');
@@ -59,7 +57,7 @@ describe('utils unit test', function () {
 
     it('clone has without keys defined', function () {
       var a = {'k1': 'v1', 'k2': 'v2', 'k3': 'v3'};
-      var b = utils.clone(a);
+      var b = yi.clone(a);
 
       b.should.eql(a);
 
@@ -68,8 +66,8 @@ describe('utils unit test', function () {
     });
 
     it('clone mixed object', function () {
-      var b = utils.clone(mixedHash);
-      var c = utils.clone(mixedHash, ['k3']);
+      var b = yi.clone(mixedHash);
+      var c = yi.clone(mixedHash, ['k3']);
 
       b.should.have.property('k1');
       b.should.have.property('k2');
@@ -96,7 +94,7 @@ describe('utils unit test', function () {
     });
 
     it('clone array', function () {
-      var a = utils.clone(mixedHash.k2);
+      var a = yi.clone(mixedHash.k2);
 
       (Array.isArray(a)).should.equal(true);
       a.should.eql(mixedHash.k2);
@@ -105,40 +103,40 @@ describe('utils unit test', function () {
 
     it('clone normal value', function () {
       var v = 'v1';
-      var a = utils.clone(v);
+      var a = yi.clone(v);
       a.should.exactly(v);
     });
 
     it('clone undefined value', function () {
       var un = undefined;
-      var a = utils.clone(un);
+      var a = yi.clone(un);
       (a === undefined).should.ok;
     });
 
     it('clone empty hash', function () {
       var empty = {};
-      var a = utils.clone(empty);
+      var a = yi.clone(empty);
 
       a.should.eql({});
     });
 
     it('clone empty array', function () {
       var empty = [];
-      var a = utils.clone(empty);
+      var a = yi.clone(empty);
 
       a.should.eql([]);
     });
 
     it('clone empty value', function () {
       var empty = '';
-      var a = utils.clone(empty);
+      var a = yi.clone(empty);
 
       a.should.exactly('');
     });
 
     it('clone null', function () {
       var empty = null;
-      var a = utils.clone(empty);
+      var a = yi.clone(empty);
 
       (a === null).should.ok;
     });
@@ -158,7 +156,7 @@ describe('utils unit test', function () {
         k3: 'b3',
         k4:  null
       };
-      var c = utils.merge(a, b);
+      var c = yi.merge(a, b);
       
       c.should.exactly(a);
       c.should.have.property('k3');
@@ -176,15 +174,15 @@ describe('utils unit test', function () {
         k3: 'b3',
         k4:  null
       };
-      a = utils.merge(a, b);
+      a = yi.merge(a, b);
       a.should.eql(b);
 
       a = '';
-      a = utils.merge(a, b);
+      a = yi.merge(a, b);
       a.should.eql(b);
 
       a = undefined;
-      a = utils.merge(a, b);
+      a = yi.merge(a, b);
       a.should.eql(b);
 
     });
@@ -195,16 +193,16 @@ describe('utils unit test', function () {
         k2: 'a2',
         k3: 'a3'
       };
-      var c = utils.merge(a, null);
+      var c = yi.merge(a, null);
       c.should.exactly(a);
 
-      c = utils.merge(a, undefined);
+      c = yi.merge(a, undefined);
       c.should.exactly(a);
 
-      c = utils.merge(a, '');
+      c = yi.merge(a, '');
       c.should.exactly(a);
 
-      c = utils.merge(a, 5);
+      c = yi.merge(a, 5);
       c.should.exactly(a);
 
     });
@@ -219,12 +217,12 @@ describe('utils unit test', function () {
         k2: 'a2',
         k3: 'a3'
       };
-      var b = utils.filter(a, ['k1', 'k2', 'k3']);
+      var b = yi.filter(a, ['k1', 'k2', 'k3']);
       
       b.should.not.exactly(a);
       b.should.eql(a);
 
-      b = utils.filter(a, 'k1, k2');
+      b = yi.filter(a, 'k1, k2');
       b.should.have.property('k1');
       b.should.have.property('k2');
       b.should.not.have.property('k3');
