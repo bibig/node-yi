@@ -1,6 +1,6 @@
 # Yi
 + this module collect common useful functions
-+ btw, yi is a chinese word mean easy.
++ btw, yi is a chinese word '易', which means easy.
 
 ### install
  npm install yi
@@ -22,6 +22,11 @@
   yi.isEmpty(''); // true
   yi.isEmpty([]); // true
   yi.isEmpty({}); // true
+
+  yi.jsEmpty(new Date()); // false
+  yi.isEmpty(Math); // false
+  yi.isEmpty(/hello/); // false
+
 ```
 
 please see the test files

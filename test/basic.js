@@ -4,28 +4,47 @@ var should = require('should');
 describe('yi unit test', function () {
 
   describe('trim unit test', function () {
-    it('test trim', function () {
+    it('basic', function () {
       yi.trim(' a ').should.be.exactly('a');
       yi.trim(' a b ').should.be.exactly('a b');
     });  
   });
 
+  describe('isPlainObject unit test', function () {
+    it('basic', function () {
+      yi.isPlainObject({}).should.ok;
+    });
+  });
+
   describe('isEmpty unit test', function () {
-    (yi.isEmpty(null)).should.ok;
-    (yi.isEmpty('')).should.ok;
-    (yi.isEmpty(undefined)).should.ok;
+    it ('basic', function () {
+      (yi.isEmpty(null)).should.ok;
+      (yi.isEmpty('')).should.ok;
+      (yi.isEmpty(undefined)).should.ok;
+      (yi.isEmpty('a')).should.not.be.ok;
+      (yi.isEmpty(1)).should.not.be.ok;
+      (yi.isEmpty(0)).should.not.be.ok;
+    });
 
-    (yi.isEmpty([])).should.ok;
-    (yi.isEmpty({})).should.ok;
+    it ('array', function () {
+      (yi.isEmpty([])).should.ok;
+      (yi.isEmpty([null])).should.not.be.ok;
+      (yi.isEmpty([''])).should.not.be.ok;
+      (yi.isEmpty([undefined])).should.not.be.ok;
+    });
 
-    (yi.isEmpty('a')).should.not.be.ok;
-    (yi.isEmpty(1)).should.not.be.ok;
-    (yi.isEmpty(0)).should.not.be.ok;
+    it ('plain object', function () {
+      (yi.isEmpty({})).should.ok;
+      (yi.isEmpty({a: null})).should.not.be.ok;
+    });
 
-    (yi.isEmpty([null])).should.not.be.ok;
-    (yi.isEmpty([''])).should.not.be.ok;
-    (yi.isEmpty([undefined])).should.not.be.ok;
-    (yi.isEmpty({a: null})).should.not.be.ok;
+    it ('other object', function () {
+      (yi.isEmpty(new Date(''))).should.not.be.ok;
+      (yi.isEmpty(arguments)).should.not.be.ok;
+      (yi.isEmpty(Math)).should.not.be.ok;
+      (yi.isEmpty(/a/)).should.not.be.ok;
+    });    
+    
   });
 
   describe('clone unit test', function () {

@@ -1,11 +1,13 @@
-exports.isEmpty    = isEmpty;
-exports.trim       = trim;
-exports.filter     = filter;
-exports.merge      = merge;
-exports.mergeArray = mergeArray;
-exports.clone      = clone;
-exports.cloneArray = cloneArray;
-exports.humanSize  = humanSize;
+exports.isEmpty       = isEmpty;
+exports.isNotEmpty    = isNotEmpty;
+exports.isPlainObject = isPlainObject;
+exports.trim          = trim;
+exports.filter        = filter;
+exports.merge         = merge;
+exports.mergeArray    = mergeArray;
+exports.clone         = clone;
+exports.cloneArray    = cloneArray;
+exports.humanSize     = humanSize;
 
 
 
@@ -19,21 +21,30 @@ function trim (v) {
 
 }
 
-function isEmpty (v) {
+function isPlainObject (v) {
+  return  typeof v === 'object' && toString.call(v) === '[object Object]';
+}
 
-  if (Array.isArray(v)) {
-    return v.length === 0;  
-  }
+function isEmpty (v) {
 
   if (v === undefined || v === null || v === '') {
     return true;
   }
 
-  if (typeof v === 'object') {
+  if (Array.isArray(v)) {
+    return v.length === 0;  
+  }
+
+  if (isPlainObject(v)) {
     return Object.keys(v).length === 0 ;
   }
 
   return false;
+}
+
+
+function isNotEmpty(v) {
+  return ! isEmpty(v);
 }
 
 /**
