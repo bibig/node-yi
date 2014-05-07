@@ -13,6 +13,9 @@ describe('yi unit test', function () {
   describe('isPlainObject unit test', function () {
     it('basic', function () {
       yi.isPlainObject({}).should.ok;
+      yi.isPlainObject([]).should.not.ok;
+      yi.isPlainObject(null).should.not.ok;
+      yi.isPlainObject(undefined).should.not.ok;
     });
   });
 
