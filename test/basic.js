@@ -20,7 +20,7 @@ describe('yi unit test', function () {
   });
 
   describe('isEmpty unit test', function () {
-    it ('basic', function () {
+    it('basic', function () {
       (yi.isEmpty(null)).should.ok;
       (yi.isEmpty('')).should.ok;
       (yi.isEmpty(undefined)).should.ok;
@@ -29,25 +29,37 @@ describe('yi unit test', function () {
       (yi.isEmpty(0)).should.not.be.ok;
     });
 
-    it ('array', function () {
+    it('array', function () {
       (yi.isEmpty([])).should.ok;
       (yi.isEmpty([null])).should.not.be.ok;
       (yi.isEmpty([''])).should.not.be.ok;
       (yi.isEmpty([undefined])).should.not.be.ok;
     });
 
-    it ('plain object', function () {
+    it('plain object', function () {
       (yi.isEmpty({})).should.ok;
       (yi.isEmpty({a: null})).should.not.be.ok;
     });
 
-    it ('other object', function () {
+    it('other object', function () {
       (yi.isEmpty(new Date(''))).should.not.be.ok;
       (yi.isEmpty(arguments)).should.not.be.ok;
       (yi.isEmpty(Math)).should.not.be.ok;
       (yi.isEmpty(/a/)).should.not.be.ok;
     });    
     
+  });
+
+  describe('areEmpty and areNotEmpty', function () {
+
+    it('basic', function () {
+      should(yi.areEmpty({}, [], null, '', undefined)).be.true;
+      should(yi.areEmpty({}, [], null, '', undefined, 0)).not.be.true;
+
+      should(yi.areNotEmpty(0, new Date(), /adf/, 'a', {a:1}, [1, 'a'])).be.true;
+      should(yi.areEmpty(1, /adf/, 'a', {})).not.be.true;
+    });
+
   });
 
   describe('clone unit test', function () {
@@ -226,6 +238,51 @@ describe('yi unit test', function () {
 
       c = yi.merge(a, 5);
       c.should.exactly(a);
+
+    });
+
+    it('deep merge test', function () {
+      var a = {
+        k1: 'a1',
+        k2: {
+          sub_k1: 'as1',
+          sub_k2: 'as2',
+          sub_k5: {
+            sub_sub_k1: 'ass1'
+          }
+        }
+      };
+
+      var defaultSettings = {
+        k1: 'd1',
+        k2: {
+          sub_k1: 'ds1',
+          sub_k2: 'ds2',
+          sub_k3: 'ds3',
+          sub_k4: 'ds4',
+          sub_k5: {
+            sub_sub_k1: 'dss1',
+            sub_sub_k2: 'dss2'
+          }
+        },
+        k3: 'd3'
+      };
+
+      yi.merge(a, defaultSettings);
+
+      a.should.have.property('k1', 'a1');
+      a.should.have.property('k2');
+      a.should.have.property('k3', 'd3');
+
+      a.k2.should.have.property('sub_k1', 'as1');
+      a.k2.should.have.property('sub_k2', 'as2');
+      a.k2.should.have.property('sub_k3', 'ds3');
+      a.k2.should.have.property('sub_k4', 'ds4');
+
+      a.k2.should.have.property('sub_k5');
+
+      a.k2.sub_k5.should.have.property('sub_sub_k1', 'ass1');
+      a.k2.sub_k5.should.have.property('sub_sub_k2', 'dss2');
 
     });
     

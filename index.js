@@ -1,5 +1,7 @@
 exports.isEmpty       = isEmpty;
 exports.isNotEmpty    = isNotEmpty;
+exports.areEmpty      = areEmpty;
+exports.areNotEmpty   = areNotEmpty;
 exports.isPlainObject = isPlainObject;
 exports.trim          = trim;
 exports.filter        = filter;
@@ -43,13 +45,64 @@ function isEmpty (v) {
 }
 
 
-function isNotEmpty(v) {
+function isNotEmpty (v) {
   return ! isEmpty(v);
 }
 
 /**
+ * [areEmpty description]
+ * return true when all arguments are empty
+ * 
+ * @author bibig@me.com
+ * @update [2014-05-09 08:53:45]
+ * @return {boolean}
+ */
+function areEmpty () {
+  var i;
+  var result = true;
+
+  for (i = 0; i < arguments.length; i++) {
+    
+    if ( result ) {
+      result = isEmpty(arguments[i]);
+    } else {
+      break;
+    }
+
+  }
+  return result;
+
+}
+
+/**
+ * [areNotEmpty description]
+ * return true when all arguments are not empty
+ * 
+ * @author bibig@me.com
+ * @update [2014-05-09 08:56:47]
+ * @return {boolean}
+ */
+function areNotEmpty () {
+  var i;
+  var result = true;
+
+  for (i = 0; i < arguments.length; i++) {
+    
+    if ( result ) {
+      result = isNotEmpty(arguments[i]);
+    } else {
+      break;
+    }
+
+  }
+  return result;
+}
+
+/**
  * merge keys of the default object info the target object
- * ...
+ * only manipulate plain object.
+ * support deep merge.
+ * 
  * @author bibig@me.com
  * @update [2014-05-05 11:50:11]
  * @param  {object} targetObj
@@ -65,16 +118,16 @@ function isNotEmpty(v) {
  */
 function merge (targetObj, defaultObj) {
 
-  if (! targetObj) { targetObj = {};}
+  if ( ! targetObj || !isPlainObject(targetObj) ) { targetObj = {};}
 
-  if (! defaultObj || typeof defaultObj !== 'object') { return targetObj; }
-
-  if (typeof targetObj !== 'object') { targetObj = {}; }
+  if (! defaultObj || !isPlainObject(defaultObj) ) { return targetObj; }
   
   Object.keys(defaultObj).forEach(function (key) {
 
     if (targetObj[key] === undefined) {
       targetObj[key] = defaultObj[key];
+    } else if ( isPlainObject(targetObj[key]) && isPlainObject(defaultObj[key]) && isNotEmpty(defaultObj[key]) ) {
+      targetObj[key] = merge(targetObj[key], defaultObj[key]);
     }
 
   });
