@@ -253,6 +253,13 @@ describe('yi unit test', function () {
         }
       };
 
+      var b = {
+        k1: 'b1',
+        k2: {
+          sub_k1: 'bs1'
+        }
+      };
+
       var defaultSettings = {
         k1: 'd1',
         k2: {
@@ -283,6 +290,19 @@ describe('yi unit test', function () {
 
       a.k2.sub_k5.should.have.property('sub_sub_k1', 'ass1');
       a.k2.sub_k5.should.have.property('sub_sub_k2', 'dss2');
+
+      yi.merge(b, defaultSettings);
+
+      b.should.have.property('k1', 'b1');
+      b.should.have.property('k2');
+      b.should.have.property('k3', 'd3');
+
+      b.k2.should.have.property('sub_k1', 'bs1');
+      b.k2.should.have.property('sub_k2', 'ds2');
+      b.k2.should.have.property('sub_k3', 'ds3');
+      b.k2.should.have.property('sub_k4', 'ds4');
+
+      b.k2.should.have.property('sub_k5', defaultSettings.k2.sub_k5);
 
     });
     
