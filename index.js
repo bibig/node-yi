@@ -100,6 +100,7 @@ function areNotEmpty () {
 
 /**
  * merge keys of the default object info the target object
+ * merge nerver override the exist keys value
  * only manipulate plain object.
  * support deep merge.
  * 
@@ -132,7 +133,7 @@ function merge (targetObj, defaultObj) {
 
   });
 
-  return targetObj;            
+  return targetObj;
 }
 
 /**
@@ -211,7 +212,7 @@ function clone (target, keys) {
     return cloneArray(target);
   } 
     
-  if (typeof target === 'object') {
+  if (isPlainObject(target)) {
     copycat = {};
 
     if ( typeof keys === 'string') {
