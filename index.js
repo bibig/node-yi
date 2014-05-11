@@ -262,24 +262,38 @@ function humanSize (size) {
 }
 
 /**
- * [forEach]
- * use for plain object or array
+ * [forEach description]
+ * only use for plain object, loop in each key
  * 
  * @author bibig@me.com
- * @update [date]
- * @param  {[type]}   obj [description]
- * @param  {Function} fn  [description]
- * @return {[type]}       [description]
+ * @update [2014-05-11 10:15:29]
+ * @param  {object}   obj       [target object]
+ * @param  {Function} fn        [callback]
+ * @param  {array or fn}   whiteList 
+ * 
  */
-function forEach (obj, fn) {
-  var keys;
+function forEach (obj, fn, whiteList) {
+  var filterFn;
 
-  if ( ! (isPlainObject(obj) || Array.isArray(obj)) ||  isEmpty(obj)) { return; }
-  
-  keys = Object.keys(obj);
+  if ( ! isPlainObject(obj) ||  isEmpty(obj)) { return; }
 
-  keys.forEach(function (key) {
-    fn(key, obj[key]);
+
+  if ( isEmpty(whiteList) ) {
+    whiteList = Object.keys(obj);
+  } else if (typeof whiteList == 'function') {
+    filterFn = whiteList;
+    whiteList = Object.keys(obj);
+  } else if ( ! Array.isArray(whiteList) ) {
+    whiteList = Object.keys(obj);
+  }
+
+  whiteList.forEach(function (k) {
+    var v = obj[k];
+
+    if (filterFn) {
+      if ( ! filterFn(k, v) ) return;
+    }
+    
+    fn(k, v);
   });
-  
 }

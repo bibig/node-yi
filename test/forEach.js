@@ -13,8 +13,8 @@ describe('forEach unit test', function () {
   it('basic', function () {
     var i = 0;
 
-    yi.forEach(obj, function (key, item) {
-      obj[key].should.eql(item);
+    yi.forEach(obj, function (k, v) {
+      obj[k].should.eql(v);
       i++;
     });
 
@@ -22,37 +22,51 @@ describe('forEach unit test', function () {
 
   });
 
-  it('for array', function () {
-    var i = 0;
-    var arr = ['a', 'b', 'c', 'd'];
+  it('use array whitelist', function () {
 
-    yi.forEach(arr, function (key, item) {
+    var results = [];
 
-      should(key).eql(i);
-      should(item).eql(arr[i]);
-      i++;
+    yi.forEach(obj, function (k, v) {
+      results.push(v);
+    }, ['k1', 'k4', 'none-exist']);
+
+    results.should.eql(['v1', 'v4', undefined]);
+  });
+
+  it('use function whitelist', function () {
+
+    var results = [];
+
+    yi.forEach(obj, function (k, v) {
+      results.push(v);
+    }, function (k, v) {
+      return ['k2', 'k3'].indexOf(k) > -1;
     });
 
-    should(i).eql(4);
-
+    results.should.eql(['v2', 'v3']);
   });
 
   it('bad argc', function () {
 
     var i = 0;
 
-    yi.forEach(null, function (key, item) {
+    yi.forEach(null, function (k, v) {
       i++;
     });
 
-    yi.forEach('adsf', function (key, item) {
+    yi.forEach('adsf', function (k, v) {
       i++;
     });
 
-    yi.forEach(new Date(), function (key, item) {
+    yi.forEach(['a', 'b', 'c'], function (k, v) {
       i++;
     });
 
+    yi.forEach(new Date(), function (k, v) {
+      i++;
+    });
+
+    // nothing happen
     should(i).eql(0);
 
   });
