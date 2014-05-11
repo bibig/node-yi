@@ -156,14 +156,14 @@ function filter (target, keys) {
     keys = keys.split(',');
   }
 
-  if ( ! keys || ! Array.isArray(keys) ) {
+  if ( ! areNotEmpty(target, keys) || ! Array.isArray(keys) ) {
     return safe;
   }
 
   keys.forEach(function (key) {
     key = trim(key);
 
-    if (target[key] !== undefined && target[key] !== null && target[key] !== '') {
+    if (isNotEmpty(target[key])) {
       safe[key] = target[key];
     }
 
@@ -205,7 +205,7 @@ function cloneArray (target) {
 function clone (target, keys) {
   var copycat;
   
-  if (target === null || target === undefined || target === '') {
+  if (isEmpty(target)) {
     return target;
   }
 
@@ -280,6 +280,8 @@ function forEach (obj, fn, whiteList) {
 
   if ( isEmpty(whiteList) ) {
     whiteList = Object.keys(obj);
+  } else if ( isPlainObject(whiteList) ) {
+    whiteList = Object.keys(whiteList);
   } else if (typeof whiteList == 'function') {
     filterFn = whiteList;
     whiteList = Object.keys(obj);
