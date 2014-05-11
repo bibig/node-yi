@@ -10,6 +10,7 @@ exports.mergeArray    = mergeArray;
 exports.clone         = clone;
 exports.cloneArray    = cloneArray;
 exports.humanSize     = humanSize;
+exports.forEach       = forEach;
 
 
 
@@ -260,3 +261,25 @@ function humanSize (size) {
 
 }
 
+/**
+ * [forEach]
+ * use for plain object or array
+ * 
+ * @author bibig@me.com
+ * @update [date]
+ * @param  {[type]}   obj [description]
+ * @param  {Function} fn  [description]
+ * @return {[type]}       [description]
+ */
+function forEach (obj, fn) {
+  var keys;
+
+  if ( ! (isPlainObject(obj) || Array.isArray(obj)) ||  isEmpty(obj)) { return; }
+  
+  keys = Object.keys(obj);
+
+  keys.forEach(function (key) {
+    fn(key, obj[key]);
+  });
+  
+}
