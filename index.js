@@ -101,7 +101,7 @@ function areNotEmpty () {
 
 /**
  * merge keys of the default object info the target object
- * merge nerver override the exist keys value
+ * merge never override the exist keys value
  * only manipulate plain object.
  * support deep merge.
  * 
